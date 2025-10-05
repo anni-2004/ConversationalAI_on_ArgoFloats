@@ -1,0 +1,17 @@
+# Virtual Environment
+.venv/
+venv/
+env/
+
+# Python Cache
+__pycache__/
+*.pyc
+
+# Vector Databases and Data
+chroma_db/
+
+# data/  <-- अगर आपका 'data' फ़ोल्डर बहुत बड़ा है तो इसे भी अनकमेंट (uncomment) कर दें।
+
+# Operating System Files (Windows, macOS, etc.)
+Thumbs.db
+.DS_Store
