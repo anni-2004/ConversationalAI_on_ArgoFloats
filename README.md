@@ -1,4 +1,4 @@
-Based on work from <Abhishek Tayde>
+Based on work from Abhishek Tayde
 Modified and extended by Anirudh & Shanmukh
 
 # 🤖 Conversational ARGO Ocean Data Explorer
