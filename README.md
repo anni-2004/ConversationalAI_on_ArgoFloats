@@ -1,3 +1,6 @@
+Based on work from <Abhishek Tayde>
+Modified and extended by Anirudh & Shanmukh
+
 # 🤖 Conversational ARGO Ocean Data Explorer
 
 An AI-powered conversational system for exploring and visualizing ARGO oceanographic data using natural language. This project was developed for the Smart India Hackathon 2025.
