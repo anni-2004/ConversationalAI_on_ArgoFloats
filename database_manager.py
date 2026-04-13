@@ -6,8 +6,8 @@ from sqlalchemy_utils import database_exists, create_database
 import pandas as pd
 import traceback
 import sqlalchemy as sa
-import json  # Added to handle JSON data
-from config import get_db_url, USE_SQLITE # ADD THIS LINE
+import json
+from config import get_db_url, USE_SQLITE
 
 logging.basicConfig(level=logging.INFO, force=True)
 logger = logging.getLogger(__name__)
@@ -21,13 +21,12 @@ class DatabaseManager:
     def initialize_database(self):
         try:
             if not USE_SQLITE:
-                # Check for and create the database
                 if not database_exists(self.engine.url):
                     create_database(self.engine.url)
                     logger.info("Database created successfully.")
             
-            # Create tables from a known good schema
             schema_file = 'database_schema.sql'
+
             if not USE_SQLITE and self.engine.dialect.has_table(self.engine.connect(), 'argo_profiles'):
                 logger.info("Tables already exist. Skipping table creation.")
                 return
@@ -46,43 +45,65 @@ class DatabaseManager:
             raise
 
     def clear_all_data(self):
-        """Truncates all data from the database tables using raw SQL."""
+        """Safely clears all table data."""
         try:
             with self.engine.connect() as conn:
-                conn.execute(text("TRUNCATE TABLE argo_profiles RESTART IDENTITY;"))
+                conn.execute(text("DELETE FROM argo_profiles;"))
                 logger.info("Argo profiles table has been cleared.")
-                conn.execute(text("TRUNCATE TABLE float_metadata RESTART IDENTITY;"))
+
+                conn.execute(text("DELETE FROM float_metadata;"))
                 logger.info("Float metadata table has been cleared.")
+
                 conn.commit()
+
             return True
+
         except Exception as e:
             logger.error(f"Error clearing tables: {e}")
             return False
 
     def insert_argo_data(self, df: pd.DataFrame, metadata: dict):
+
         if df.empty:
             logger.warning("DataFrame is empty, skipping insertion.")
             return True
 
-        # Convert bytes to string and lists to JSON for consistency
+        # ---- FIX 1: Normalize column names to match database schema ----
+        column_mapping = {
+            "lat": "latitude",
+            "lon": "longitude"
+        }
+
+        df = df.rename(columns=column_mapping)
+
+        # ---- FIX 2: Remove geom column if DB doesn't have it ----
+        if "geom" in df.columns:
+            df = df.drop(columns=["geom"])
+
+        # ---- FIX 3: Convert metadata values safely ----
         metadata_str = {}
         for key, value in metadata.items():
+
             if isinstance(value, bytes):
                 metadata_str[key] = value.decode('utf-8').strip()
+
             elif isinstance(value, list):
-                # Correctly convert the Python list to a JSON string
                 metadata_str[key] = json.dumps(value)
+
             else:
                 metadata_str[key] = value
-        
+
         float_id_str = metadata_str['float_id']
 
         try:
             with self.engine.connect() as conn:
-                # Insert metadata with a simple UPSERT
+
+                # ---- Insert metadata with UPSERT ----
                 stmt = text("""
-                    INSERT INTO float_metadata (float_id, wmo_id, project_name, institution, date_launched, parameters)
-                    VALUES (:float_id, :wmo_id, :project_name, :institution, :date_launched, :parameters)
+                    INSERT INTO float_metadata
+                    (float_id, wmo_id, project_name, institution, date_launched, parameters)
+                    VALUES
+                    (:float_id, :wmo_id, :project_name, :institution, :date_launched, :parameters)
                     ON CONFLICT (float_id) DO UPDATE SET
                         wmo_id = EXCLUDED.wmo_id,
                         project_name = EXCLUDED.project_name,
@@ -90,24 +111,38 @@ class DatabaseManager:
                         date_launched = EXCLUDED.date_launched,
                         parameters = EXCLUDED.parameters;
                 """)
+
                 conn.execute(stmt, metadata_str)
                 conn.commit()
+
                 logger.info(f"Inserted metadata for float {float_id_str}.")
 
-                # Clean up old data for this float before inserting new data
-                conn.execute(text("DELETE FROM argo_profiles WHERE float_id = :float_id"), {'float_id': float_id_str})
-                conn.commit()
-
-                # Use pandas to_sql for efficient bulk insert
-                df.to_sql(
-                    'argo_profiles', 
-                    self.engine, 
-                    if_exists='append', 
-                    index=False
+                # ---- Remove old data for that float ----
+                conn.execute(
+                    text("DELETE FROM argo_profiles WHERE float_id = :float_id"),
+                    {'float_id': float_id_str}
                 )
                 conn.commit()
-                
+
+                # Remove rows with missing values
+                df = df.dropna(subset=["temperature", "salinity", "depth"])
+                df = df.reset_index(drop=True)
+
+                logger.info(f"Cleaned dataframe size: {len(df)}")
+
+                df.to_sql(
+                    'argo_profiles',
+                    self.engine,
+                    if_exists='append',
+                    index=False,
+                    chunksize=1000,
+                    method="multi"
+                )
+
+                conn.commit()
+
                 logger.info(f"Inserted {len(df)} rows for float {float_id_str}.")
+
             return True
 
         except Exception as e:
@@ -115,23 +150,30 @@ class DatabaseManager:
             logger.error(traceback.format_exc())
             return False
 
+
     def execute_query(self, query: str):
+
         try:
             with self.engine.connect() as connection:
                 df = pd.read_sql_query(text(query), connection)
+
             return {
                 "success": True,
                 "data": df.to_dict('records'),
                 "columns": df.columns.tolist(),
                 "rowcount": len(df)
             }
+
         except Exception as e:
             logger.error(f"Error executing query: {e}")
             return {"success": False, "error": str(e), "data": []}
 
+
     def get_metrics(self):
+
         try:
             with self.engine.connect() as conn:
+
                 active_floats_query = "SELECT COUNT(DISTINCT float_id) FROM float_metadata;"
                 active_floats = conn.execute(text(active_floats_query)).scalar()
 
@@ -147,8 +189,10 @@ class DatabaseManager:
                 "ocean_profiles": ocean_profiles,
                 "data_points": data_points
             }
+
         except Exception as e:
             logging.error(f"Error fetching metrics: {e}")
+
             return {
                 "success": False,
                 "error": str(e)

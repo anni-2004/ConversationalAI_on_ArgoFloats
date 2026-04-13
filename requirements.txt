@@ -12,13 +12,14 @@ plotly
 sqlalchemy
 psycopg2-binary
 GeoAlchemy2
+sqlalchemy-utils
 
 # --- AI, LLM & Vector Store ---
 langchain
 langchain-ollama
 sentence-transformers
 chromadb
-
+langchain_community
 # --- Utilities ---
 requests
 python-dotenv

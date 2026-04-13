@@ -88,36 +88,85 @@ class RAGSQLQueryExecutor:
             logger.error(f"❌ Failed to connect to Ollama: {e}")
             raise
 
-        self.sql_prompt_template = """You are an expert oceanographer and SQL developer for a PostGIS-enabled ARGO float database. Your task is to write a single, simple, and efficient PostgreSQL query to answer the user's question.
+        self.sql_prompt_template = """You are an expert oceanographer and SQL developer working with an ARGO float PostgreSQL database. Your task is to generate a single, correct SQL query that answers the user's question.
 
 ### RULES:
-1.  **ALWAYS** use a simple `WHERE` clause for filtering. Do **NOT** use complex subqueries or `JOIN`s.
-2.  For geospatial queries, use the `geom` column.
-3.  **STRICTLY** use the `<->` distance operator **ONLY** in the `ORDER BY` clause to find the nearest points.
-4.  To filter points within a certain distance, use the `ST_DWithin` function in the `WHERE` clause.
-5.  For filtering by date or time, you **MUST** use the `time` column.
-6.  For time-of-day filtering (e.g., 'at night', 'in the morning'), you **MUST** cast the `time` column to a `time` type using `::time`. Example: `time::time >= '20:00:00'::time`.
-7.  `ST_MakePoint` expects `(longitude, latitude)`.
-8.  Return ONLY the SQL query. Do not add any explanation, markdown, or comments.
-9.  The table name is `argo_profiles`.
+1. ALWAYS generate a simple PostgreSQL query using the table `argo_profiles`.
+2. Use simple SQL with `SELECT`, `WHERE`, `GROUP BY`, `ORDER BY`, `LIMIT`, and aggregation functions when necessary.
+3. DO NOT use complex subqueries or `JOIN`s.
+4. The available columns are:
+   - float_id
+   - profile_number
+   - time
+   - latitude
+   - longitude
+   - depth
+   - temperature
+   - salinity
+5. For filtering by float, use the `float_id` column.
+6. For filtering by time or date, use the `time` column.
+7. For time-of-day filtering (e.g., "night", "morning"), cast timestamp using `time::time`.
+8. For depth filtering, use the `depth` column.
+9. For temperature analysis, use the `temperature` column.
+10. For salinity analysis, use the `salinity` column.
+11. Return ONLY the SQL query.
+12. Do NOT include explanations, markdown, or comments.
+13. End the SQL query with a semicolon.
 
 ### EXAMPLES:
+
 User Question: How many unique floats are there?
-SQL Query: SELECT COUNT(DISTINCT float_id) FROM argo_profiles;
+SQL Query:
+SELECT COUNT(DISTINCT float_id) FROM argo_profiles;
 
-User Question: Show me the temperature depth profile for float 5906256.
-SQL Query: SELECT depth, temperature, float_id, profile_number FROM argo_profiles WHERE float_id = '5906256' ORDER BY depth ASC;
+User Question: Show temperature depth profile for float 5906256.
+SQL Query:
+SELECT depth, temperature FROM argo_profiles
+WHERE float_id = '5906256'
+ORDER BY depth ASC;
 
-User Question: What are the 5 nearest floats to 15.29 N, 73.91 E?
-SQL Query: SELECT float_id, lat, lon FROM argo_profiles ORDER BY geom <-> ST_SetSRID(ST_MakePoint(73.91, 15.29), 4326) LIMIT 5;
+User Question: What is the average temperature at 1000 meters?
+SQL Query:
+SELECT AVG(temperature)
+FROM argo_profiles
+WHERE depth BETWEEN 950 AND 1050;
 
-User Question: Give latest observations within 50km of (72.5E, 15.0N) between 2024-01-01 and 2024-01-31.
-SQL Query: SELECT * FROM argo_profiles WHERE ST_DWithin(geom, ST_MakePoint(72.5, 15.0)::geography, 50000) AND time BETWEEN '2024-01-01'::timestamp AND '2024-01-31'::timestamp ORDER BY time DESC LIMIT 10;
+User Question: Show the latest 10 measurements.
+SQL Query:
+SELECT *
+FROM argo_profiles
+ORDER BY time DESC
+LIMIT 10;
+
+User Question: What is the minimum temperature recorded?
+SQL Query:
+SELECT MIN(temperature)
+FROM argo_profiles;
+
+User Question: Which float recorded the highest salinity?
+SQL Query:
+SELECT float_id, MAX(salinity)
+FROM argo_profiles
+GROUP BY float_id
+ORDER BY MAX(salinity) DESC
+LIMIT 1;
+
 ---
 
 ### DATABASE SCHEMA:
-- Table: `argo_profiles`
-- Columns: `float_id`, `time` (timestamp), `lat`, `lon`, `depth`, `temperature`, `salinity`, `geom` (geospatial point), `profile_number`
+Table: argo_profiles
+
+Columns:
+float_id (text)
+profile_number (integer)
+time (timestamp)
+latitude (double precision)
+longitude (double precision)
+depth (double precision)
+temperature (double precision)
+salinity (double precision)
+
+---
 
 ### CONTEXT FROM DATA METADATA:
 {context}
@@ -125,23 +174,23 @@ SQL Query: SELECT * FROM argo_profiles WHERE ST_DWithin(geom, ST_MakePoint(72.5,
 ### CURRENT USER QUESTION:
 {question}
 
-SQL Query:"""
+SQL Query:
+"""
+        self.response_prompt_template = """You are an expert oceanographer acting as a helpful AI assistant.
 
-        self.response_prompt_template = """You are an expert oceanographer acting as a helpful AI assistant. The user is seeing a chart or a data summary generated from the data below. Your task is to provide a brief, insightful summary that guides the user.
-
-### User Question:
+### USER QUESTION
 {question}
 
-### Data Summary:
+### DATA SUMMARY
 {data_summary}
 
-### Your Response Should:
-1.  Acknowledge that the requested data/chart is being displayed.
-2.  Provide one or two clear, simple oceanographic insights based on the data summary (e.g., "The data shows the typical ocean pattern where temperature decreases as depth increases.").
-3.  Keep the response friendly, concise, and helpful. Do not say "I cannot generate a plot."
+### INSTRUCTIONS
+1. Briefly explain the result in simple language.
+2. Mention any oceanographic insight if possible.
+3. Keep the answer short and clear.
 
-Analysis:"""
-
+Response:
+"""
     def _generate_sql(self, question: str, context: str):
         prompt = self.sql_prompt_template.format(context=context, question=question)
         response = self.llm.invoke(prompt)

@@ -5,7 +5,7 @@ USE_SQLITE = False
 
 # PostgreSQL database URL
 # Replace with your actual credentials if they are different
-POSTGRES_DB_URL = "postgresql://postgres:123123@localhost:5432/argo_db" 
+POSTGRES_DB_URL = "postgresql://argo_user:password@localhost:5432/argo_db"
 
 # Data processing configuration
 DATA_PROCESSING_CONFIG = {
@@ -15,7 +15,7 @@ DATA_PROCESSING_CONFIG = {
 
 # Vector database configuration
 VECTOR_DB_CONFIG = {
-    "path": "C:\\Users\\ACER\\Documents\\Float-Chat\\chroma_db",  # Updated to absolute path
+    "path": "chroma_db",
     "collection_name": "argo_metadata",
     "embedding_model": "all-MiniLM-L6-v2"
 }
@@ -23,7 +23,7 @@ VECTOR_DB_CONFIG = {
 # Ollama LLM configuration
 OLLAMA_CONFIG = {
     "base_url": "http://localhost:11434",
-    "model": "llama3:8b", # Or your preferred model
+    "model": "llama3.2",
     "temperature": 0.1
 }
 
