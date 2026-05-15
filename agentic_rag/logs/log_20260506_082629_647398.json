@@ -1,0 +1,13 @@
+{
+  "timestamp": "2026-05-06T08:26:23.430546",
+  "user_query": "find the average temperature  when depth is greater than 10m",
+  "attempts": [
+    {
+      "attempt": 1,
+      "sql": "SELECT AVG(temperature) FROM argo_profiles WHERE depth > '10';",
+      "success": true,
+      "error": null
+    }
+  ],
+  "final_status": "Success (First Pass)"
+}

@@ -1,0 +1,13 @@
+{
+  "timestamp": "2026-05-06T07:30:32.579927",
+  "user_query": "What is the average surface temperature recorded at night (between 22:00 and 04:00)?",
+  "attempts": [
+    {
+      "attempt": 1,
+      "sql": "SELECT AVG(temperature) FROM argo_profiles WHERE time::time BETWEEN '22:00' AND '04:00';",
+      "success": true,
+      "error": null
+    }
+  ],
+  "final_status": "Success (First Pass)"
+}

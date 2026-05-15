@@ -1,18 +1,26 @@
 #dashboard.py
 import streamlit as st
-import pandas as pd
-import plotly.express as px
-from datetime import datetime
-from rag_system import RAGSQLQueryExecutor
-import uuid
-import logging
 
-# Configure Streamlit page
+# Configure Streamlit page - MUST BE FIRST
 st.set_page_config(
     page_title="FloatChat: AI-Powered ARGO Data Chatbot",
     page_icon="🌊",
     layout="wide",
 )
+
+import pandas as pd
+import plotly.express as px
+from datetime import datetime
+from agentic_rag.agent_executor import AgenticSQLQueryExecutor
+import uuid
+import logging
+
+# Initialize RAG System with Agentic Loop
+@st.cache_resource
+def get_rag_executor():
+    return AgenticSQLQueryExecutor()
+
+rag_executor = get_rag_executor()
 
 # --- Custom CSS for a modern, vibrant look ---
 st.markdown(
@@ -114,7 +122,7 @@ with st.sidebar:
 if "messages" not in st.session_state:
     st.session_state.messages = []
 if "executor" not in st.session_state:
-    st.session_state.executor = RAGSQLQueryExecutor()
+    st.session_state.executor = get_rag_executor()
 
 # Helper function for visualization
 def clean_for_plot(plot_df, y_col):

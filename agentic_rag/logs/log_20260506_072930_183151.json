@@ -1,0 +1,13 @@
+{
+  "timestamp": "2026-05-06T07:29:16.883598",
+  "user_query": "Find the average temperature vs depth for the 'Southern Ocean' (lat < -40) vs 'Equatorial' (lat BETWEEN -10 AND 10).",
+  "attempts": [
+    {
+      "attempt": 1,
+      "sql": "SELECT AVG(temperature) AS avg_temp,\n       AVG(depth) AS avg_depth\nFROM argo_profiles\nWHERE latitude < -40 OR latitude BETWEEN -10 AND 10\nGROUP BY latitude;",
+      "success": true,
+      "error": null
+    }
+  ],
+  "final_status": "Success (First Pass)"
+}

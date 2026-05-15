@@ -1,0 +1,13 @@
+{
+  "timestamp": "2026-05-06T08:25:22.183991",
+  "user_query": "What is the average temperature across profiles",
+  "attempts": [
+    {
+      "attempt": 1,
+      "sql": "SELECT AVG(temperature) FROM argo_profiles WHERE depth BETWEEN 950 AND 1050;",
+      "success": true,
+      "error": null
+    }
+  ],
+  "final_status": "Success (First Pass)"
+}

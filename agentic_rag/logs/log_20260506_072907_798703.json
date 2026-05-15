@@ -1,0 +1,13 @@
+{
+  "timestamp": "2026-05-06T07:28:59.167413",
+  "user_query": "Find measurements where the temperature is more than 5 degrees above the overall average.",
+  "attempts": [
+    {
+      "attempt": 1,
+      "sql": "SELECT * FROM argo_profiles WHERE temperature > (SELECT AVG(temperature) FROM argo_profiles);",
+      "success": true,
+      "error": null
+    }
+  ],
+  "final_status": "Success (First Pass)"
+}

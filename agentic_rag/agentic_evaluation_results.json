@@ -1,0 +1,242 @@
+[
+  {
+    "id": "E1",
+    "difficulty": "Easy",
+    "question": "How many unique floats are currently in the database?",
+    "status": "Success (First Pass)",
+    "is_correct": true,
+    "latency": 6.9257800579071045
+  },
+  {
+    "id": "E2",
+    "difficulty": "Easy",
+    "question": "What is the average temperature recorded across all measurements?",
+    "status": "Success (First Pass)",
+    "is_correct": true,
+    "latency": 6.231826305389404
+  },
+  {
+    "id": "E3",
+    "difficulty": "Easy",
+    "question": "Show all measurements for float ID '2902121'.",
+    "status": "Success (First Pass)",
+    "is_correct": true,
+    "latency": 6.833453178405762
+  },
+  {
+    "id": "E4",
+    "difficulty": "Easy",
+    "question": "When was the most recent measurement taken?",
+    "status": "Success (First Pass)",
+    "is_correct": true,
+    "latency": 6.726129531860352
+  },
+  {
+    "id": "E5",
+    "difficulty": "Easy",
+    "question": "What is the maximum depth reached by any float?",
+    "status": "Success (First Pass)",
+    "is_correct": true,
+    "latency": 5.439645528793335
+  },
+  {
+    "id": "E6",
+    "difficulty": "Easy",
+    "question": "Show the latitude and longitude for float '5906256'.",
+    "status": "Success (First Pass)",
+    "is_correct": true,
+    "latency": 6.966814041137695
+  },
+  {
+    "id": "E7",
+    "difficulty": "Easy",
+    "question": "What is the minimum salinity recorded in the database?",
+    "status": "Success (First Pass)",
+    "is_correct": true,
+    "latency": 5.96059250831604
+  },
+  {
+    "id": "E8",
+    "difficulty": "Easy",
+    "question": "How many profiles have been recorded for float '1902025'?",
+    "status": "Success (First Pass)",
+    "is_correct": true,
+    "latency": 7.623932361602783
+  },
+  {
+    "id": "E9",
+    "difficulty": "Easy",
+    "question": "Find all measurements taken at a depth greater than 1500 meters.",
+    "status": "Success (First Pass)",
+    "is_correct": false,
+    "latency": 8.356902122497559
+  },
+  {
+    "id": "E10",
+    "difficulty": "Easy",
+    "question": "What is the average salinity at the surface (depth < 10 meters)?",
+    "status": "Success (First Pass)",
+    "is_correct": true,
+    "latency": 6.236188173294067
+  },
+  {
+    "id": "M1",
+    "difficulty": "Medium",
+    "question": "Which institution manages float '2902121'?",
+    "status": "Success (After Correction)",
+    "is_correct": false,
+    "latency": 23.660704135894775
+  },
+  {
+    "id": "M2",
+    "difficulty": "Medium",
+    "question": "How many floats are managed by 'INCOIS'?",
+    "status": "Success (After Correction)",
+    "is_correct": true,
+    "latency": 31.089580297470093
+  },
+  {
+    "id": "M3",
+    "difficulty": "Medium",
+    "question": "What is the bounding box (min/max lat/lon) for float '3901999'?",
+    "status": "Success (First Pass)",
+    "is_correct": true,
+    "latency": 21.454411268234253
+  },
+  {
+    "id": "M4",
+    "difficulty": "Medium",
+    "question": "Show the average temperature per day for float '5906142'.",
+    "status": "Success (First Pass)",
+    "is_correct": false,
+    "latency": 15.006553888320923
+  },
+  {
+    "id": "M5",
+    "difficulty": "Medium",
+    "question": "Find the average salinity for measurements between 500 and 1000 meters depth.",
+    "status": "Success (First Pass)",
+    "is_correct": true,
+    "latency": 8.331291675567627
+  },
+  {
+    "id": "M6",
+    "difficulty": "Medium",
+    "question": "Which float has recorded the highest temperature?",
+    "status": "Success (After Correction)",
+    "is_correct": false,
+    "latency": 15.069234371185303
+  },
+  {
+    "id": "M7",
+    "difficulty": "Medium",
+    "question": "List all unique project names represented in the database.",
+    "status": "Success (After Correction)",
+    "is_correct": true,
+    "latency": 22.637628078460693
+  },
+  {
+    "id": "M8",
+    "difficulty": "Medium",
+    "question": "Find floats that have measurements below -60 degrees latitude.",
+    "status": "Success (First Pass)",
+    "is_correct": false,
+    "latency": 15.425454139709473
+  },
+  {
+    "id": "M9",
+    "difficulty": "Medium",
+    "question": "Average temperature of all floats managed by 'FR GDAC'.",
+    "status": "Success (First Pass)",
+    "is_correct": false,
+    "latency": 6.094412565231323
+  },
+  {
+    "id": "M10",
+    "difficulty": "Medium",
+    "question": "How many measurements were taken in January 2024?",
+    "status": "Success (First Pass)",
+    "is_correct": false,
+    "latency": 10.247802972793579
+  },
+  {
+    "id": "H1",
+    "difficulty": "Hard",
+    "question": "Identify the 100m depth bin with the highest average salinity.",
+    "status": "Success (First Pass)",
+    "is_correct": false,
+    "latency": 13.006186246871948
+  },
+  {
+    "id": "H2",
+    "difficulty": "Hard",
+    "question": "Find measurements where the temperature is more than 5 degrees above the overall average.",
+    "status": "Success (First Pass)",
+    "is_correct": false,
+    "latency": 8.634242534637451
+  },
+  {
+    "id": "H3",
+    "difficulty": "Hard",
+    "question": "Which float has traveled the furthest distance north (max latitude)?",
+    "status": "Success (First Pass)",
+    "is_correct": false,
+    "latency": 6.956234693527222
+  },
+  {
+    "id": "H4",
+    "difficulty": "Hard",
+    "question": "Find the average temperature vs depth for the 'Southern Ocean' (lat < -40) vs 'Equatorial' (lat BETWEEN -10 AND 10).",
+    "status": "Success (First Pass)",
+    "is_correct": false,
+    "latency": 13.30253291130066
+  },
+  {
+    "id": "H5",
+    "difficulty": "Hard",
+    "question": "Count how many floats record 'TEMP_ADJUSTED' as a parameter.",
+    "status": "Failed",
+    "is_correct": false,
+    "latency": 22.11981773376465
+  },
+  {
+    "id": "H6",
+    "difficulty": "Hard",
+    "question": "Find the institution that has the deepest recorded measurement.",
+    "status": "Failed",
+    "is_correct": false,
+    "latency": 40.11907243728638
+  },
+  {
+    "id": "H7",
+    "difficulty": "Hard",
+    "question": "What is the average surface temperature recorded at night (between 22:00 and 04:00)?",
+    "status": "Success (First Pass)",
+    "is_correct": false,
+    "latency": 19.7572078704834
+  },
+  {
+    "id": "H8",
+    "difficulty": "Hard",
+    "question": "Calculate the average temperature for every 0.1 unit of salinity change.",
+    "status": "Success (First Pass)",
+    "is_correct": false,
+    "latency": 10.058450698852539
+  },
+  {
+    "id": "H9",
+    "difficulty": "Hard",
+    "question": "Identify floats that have crossed the equator (lat changed from negative to positive or vice versa).",
+    "status": "Failed",
+    "is_correct": false,
+    "latency": 23.82869267463684
+  },
+  {
+    "id": "H10",
+    "difficulty": "Hard",
+    "question": "List the top 5 floats with the highest data point density (total measurements / unique profiles).",
+    "status": "Success (First Pass)",
+    "is_correct": false,
+    "latency": 20.195411205291748
+  }
+]

@@ -1,0 +1,13 @@
+{
+  "timestamp": "2026-05-06T07:24:54.778005",
+  "user_query": "What is the average temperature recorded across all measurements?",
+  "attempts": [
+    {
+      "attempt": 1,
+      "sql": "SELECT AVG(temperature) FROM argo_profiles;",
+      "success": true,
+      "error": null
+    }
+  ],
+  "final_status": "Success (First Pass)"
+}

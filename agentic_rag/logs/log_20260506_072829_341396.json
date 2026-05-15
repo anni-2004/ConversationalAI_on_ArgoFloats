@@ -1,0 +1,13 @@
+{
+  "timestamp": "2026-05-06T07:28:13.917002",
+  "user_query": "Find floats that have measurements below -60 degrees latitude.",
+  "attempts": [
+    {
+      "attempt": 1,
+      "sql": "SELECT float_id FROM argo_profiles WHERE latitude < '-60';",
+      "success": true,
+      "error": null
+    }
+  ],
+  "final_status": "Success (First Pass)"
+}

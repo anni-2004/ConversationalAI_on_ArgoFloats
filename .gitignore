@@ -2,6 +2,7 @@
 .venv/
 venv/
 env/
+.env
 
 # Python Cache
 __pycache__/
@@ -9,9 +10,12 @@ __pycache__/
 
 # Vector Databases and Data
 chroma_db/
+data/
 
-# data/  <-- अगर आपका 'data' फ़ोल्डर बहुत बड़ा है तो इसे भी अनकमेंट (uncomment) कर दें।
+# Results and Artifacts
+evaluation_results_full.json
+*.zip
 
-# Operating System Files (Windows, macOS, etc.)
+# Operating System Files
 Thumbs.db
 .DS_Store

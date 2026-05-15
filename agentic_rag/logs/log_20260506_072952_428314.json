@@ -1,0 +1,19 @@
+{
+  "timestamp": "2026-05-06T07:29:30.309940",
+  "user_query": "Count how many floats record 'TEMP_ADJUSTED' as a parameter.",
+  "attempts": [
+    {
+      "attempt": 1,
+      "sql": "SELECT COUNT(DISTINCT float_id) FROM argo_profiles WHERE temperature = 'TEMP_ADJUSTED';",
+      "success": false,
+      "error": "(psycopg2.errors.InvalidTextRepresentation) invalid input syntax for type double precision: \"TEMP_ADJUSTED\"\nLINE 1: ... float_id) FROM argo_profiles WHERE temperature = 'TEMP_ADJU...\n                                                             ^\n\n[SQL: SELECT COUNT(DISTINCT float_id) FROM argo_profiles WHERE temperature = 'TEMP_ADJUSTED';]\n(Background on this error at: https://sqlalche.me/e/20/9h9h)"
+    },
+    {
+      "attempt": 2,
+      "sql": "SELECT COUNT(DISTINCT float_id) FROM argo_profiles JOIN float_metadata ON argo_profiles.float_id = float_metadata.float_id WHERE temperature::double precision = 'TEMP_ADJUSTED';",
+      "success": false,
+      "error": "(psycopg2.errors.AmbiguousColumn) column reference \"float_id\" is ambiguous\nLINE 1: SELECT COUNT(DISTINCT float_id) FROM argo_profiles JOIN floa...\n                              ^\n\n[SQL: SELECT COUNT(DISTINCT float_id) FROM argo_profiles JOIN float_metadata ON argo_profiles.float_id = float_metadata.float_id WHERE temperature::double precision = 'TEMP_ADJUSTED';]\n(Background on this error at: https://sqlalche.me/e/20/f405)"
+    }
+  ],
+  "final_status": "Failed (Both Attempts)"
+}

@@ -1,0 +1,13 @@
+{
+  "timestamp": "2026-05-06T07:31:26.961779",
+  "user_query": "List the top 5 floats with the highest data point density (total measurements / unique profiles).",
+  "attempts": [
+    {
+      "attempt": 1,
+      "sql": "SELECT float_id, COUNT(*) AS total_measurements, COUNT(DISTINCT profile_number) AS unique_profiles\nFROM argo_profiles\nGROUP BY float_id\nORDER BY total_measurements DESC\nLIMIT 5;",
+      "success": true,
+      "error": null
+    }
+  ],
+  "final_status": "Success (First Pass)"
+}

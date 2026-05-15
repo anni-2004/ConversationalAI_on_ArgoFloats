@@ -1,0 +1,13 @@
+{
+  "timestamp": "2026-05-06T07:27:12.595229",
+  "user_query": "Show the average temperature per day for float '5906142'.",
+  "attempts": [
+    {
+      "attempt": 1,
+      "sql": "SELECT AVG(temperature) \nFROM argo_profiles\nWHERE float_id = '5906142' AND time::time BETWEEN (time::time + INTERVAL '1 day') - INTERVAL '1 hour' AND (time::time + INTERVAL '1 day');",
+      "success": true,
+      "error": null
+    }
+  ],
+  "final_status": "Success (First Pass)"
+}

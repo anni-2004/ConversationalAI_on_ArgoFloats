@@ -1,0 +1,13 @@
+{
+  "timestamp": "2026-05-06T08:23:52.612163",
+  "user_query": "How many floats are available",
+  "attempts": [
+    {
+      "attempt": 1,
+      "sql": "SELECT COUNT(DISTINCT float_id) FROM argo_profiles;",
+      "success": true,
+      "error": null
+    }
+  ],
+  "final_status": "Success (First Pass)"
+}

@@ -1,0 +1,13 @@
+{
+  "timestamp": "2026-05-06T07:25:50.096402",
+  "user_query": "What is the average salinity at the surface (depth < 10 meters)?",
+  "attempts": [
+    {
+      "attempt": 1,
+      "sql": "SELECT AVG(salinity) FROM argo_profiles WHERE depth < 10;",
+      "success": true,
+      "error": null
+    }
+  ],
+  "final_status": "Success (First Pass)"
+}

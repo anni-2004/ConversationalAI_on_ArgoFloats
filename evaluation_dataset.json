@@ -1,0 +1,272 @@
+[
+  {
+    "id": "E1",
+    "difficulty": "Easy",
+    "category": "Aggregation",
+    "question": "How many unique floats are currently in the database?",
+    "ground_truth_sql": "SELECT COUNT(DISTINCT float_id) FROM argo_profiles;",
+    "relevant_tables": ["argo_profiles"],
+    "explanation": "Simple count distinct on a single column."
+  },
+  {
+    "id": "E2",
+    "difficulty": "Easy",
+    "category": "Basic Stats",
+    "question": "What is the average temperature recorded across all measurements?",
+    "ground_truth_sql": "SELECT AVG(temperature) FROM argo_profiles;",
+    "relevant_tables": ["argo_profiles"],
+    "explanation": "Simple aggregation function on a single column."
+  },
+  {
+    "id": "E3",
+    "difficulty": "Easy",
+    "category": "Filtering",
+    "question": "Show all measurements for float ID '2902121'.",
+    "ground_truth_sql": "SELECT * FROM argo_profiles WHERE float_id = '2902121';",
+    "relevant_tables": ["argo_profiles"],
+    "explanation": "Basic equality filter."
+  },
+  {
+    "id": "E4",
+    "difficulty": "Easy",
+    "category": "Temporal",
+    "question": "When was the most recent measurement taken?",
+    "ground_truth_sql": "SELECT MAX(time) FROM argo_profiles;",
+    "relevant_tables": ["argo_profiles"],
+    "explanation": "Basic temporal aggregation."
+  },
+  {
+    "id": "E5",
+    "difficulty": "Easy",
+    "category": "Depth Analysis",
+    "question": "What is the maximum depth reached by any float?",
+    "ground_truth_sql": "SELECT MAX(depth) FROM argo_profiles;",
+    "relevant_tables": ["argo_profiles"],
+    "explanation": "Simple maximum on a single column."
+  },
+  {
+    "id": "E6",
+    "difficulty": "Easy",
+    "category": "Filtering",
+    "question": "Show the latitude and longitude for float '5906256'.",
+    "ground_truth_sql": "SELECT latitude, longitude FROM argo_profiles WHERE float_id = '5906256';",
+    "relevant_tables": ["argo_profiles"],
+    "explanation": "Column selection with simple filter."
+  },
+  {
+    "id": "E7",
+    "difficulty": "Easy",
+    "category": "Salinity",
+    "question": "What is the minimum salinity recorded in the database?",
+    "ground_truth_sql": "SELECT MIN(salinity) FROM argo_profiles;",
+    "relevant_tables": ["argo_profiles"],
+    "explanation": "Basic minimum on a single column."
+  },
+  {
+    "id": "E8",
+    "difficulty": "Easy",
+    "category": "Count",
+    "question": "How many profiles have been recorded for float '1902025'?",
+    "ground_truth_sql": "SELECT COUNT(DISTINCT profile_number) FROM argo_profiles WHERE float_id = '1902025';",
+    "relevant_tables": ["argo_profiles"],
+    "explanation": "Count distinct with filter."
+  },
+  {
+    "id": "E9",
+    "difficulty": "Easy",
+    "category": "Filtering",
+    "question": "Find all measurements taken at a depth greater than 1500 meters.",
+    "ground_truth_sql": "SELECT * FROM argo_profiles WHERE depth > 1500;",
+    "relevant_tables": ["argo_profiles"],
+    "explanation": "Simple inequality filter."
+  },
+  {
+    "id": "E10",
+    "difficulty": "Easy",
+    "category": "Basic Stats",
+    "question": "What is the average salinity at the surface (depth < 10 meters)?",
+    "ground_truth_sql": "SELECT AVG(salinity) FROM argo_profiles WHERE depth < 10;",
+    "relevant_tables": ["argo_profiles"],
+    "explanation": "Aggregate with filter."
+  },
+  {
+    "id": "M1",
+    "difficulty": "Medium",
+    "category": "Metadata",
+    "question": "Which institution manages float '2902121'?",
+    "ground_truth_sql": "SELECT institution FROM float_metadata WHERE float_id = '2902121';",
+    "relevant_tables": ["float_metadata"],
+    "explanation": "Simple lookup in the metadata table."
+  },
+  {
+    "id": "M2",
+    "difficulty": "Medium",
+    "category": "Join/Aggregation",
+    "question": "How many floats are managed by 'INCOIS'?",
+    "ground_truth_sql": "SELECT COUNT(*) FROM float_metadata WHERE institution = 'INCOIS';",
+    "relevant_tables": ["float_metadata"],
+    "explanation": "Aggregation on metadata."
+  },
+  {
+    "id": "M3",
+    "difficulty": "Medium",
+    "category": "Spatial",
+    "question": "What is the bounding box (min/max lat/lon) for float '3901999'?",
+    "ground_truth_sql": "SELECT MIN(latitude), MAX(latitude), MIN(longitude), MAX(longitude) FROM argo_profiles WHERE float_id = '3901999';",
+    "relevant_tables": ["argo_profiles"],
+    "explanation": "Multiple aggregations with filter."
+  },
+  {
+    "id": "M4",
+    "difficulty": "Medium",
+    "category": "Temporal Trends",
+    "question": "Show the average temperature per day for float '5906142'.",
+    "ground_truth_sql": "SELECT time::date, AVG(temperature) FROM argo_profiles WHERE float_id = '5906142' GROUP BY time::date ORDER BY time::date;",
+    "relevant_tables": ["argo_profiles"],
+    "explanation": "Grouping by casted date."
+  },
+  {
+    "id": "M5",
+    "difficulty": "Medium",
+    "category": "Depth Analysis",
+    "question": "Find the average salinity for measurements between 500 and 1000 meters depth.",
+    "ground_truth_sql": "SELECT AVG(salinity) FROM argo_profiles WHERE depth BETWEEN 500 AND 1000;",
+    "relevant_tables": ["argo_profiles"],
+    "explanation": "Aggregate with range filter."
+  },
+  {
+    "id": "M6",
+    "difficulty": "Medium",
+    "category": "Aggregation",
+    "question": "Which float has recorded the highest temperature?",
+    "ground_truth_sql": "SELECT float_id, MAX(temperature) FROM argo_profiles GROUP BY float_id ORDER BY MAX(temperature) DESC LIMIT 1;",
+    "relevant_tables": ["argo_profiles"],
+    "explanation": "Group by, sort, and limit."
+  },
+  {
+    "id": "M7",
+    "difficulty": "Medium",
+    "category": "Metadata",
+    "question": "List all unique project names represented in the database.",
+    "ground_truth_sql": "SELECT DISTINCT project_name FROM float_metadata;",
+    "relevant_tables": ["float_metadata"],
+    "explanation": "Distinct selection on metadata."
+  },
+  {
+    "id": "M8",
+    "difficulty": "Medium",
+    "category": "Combined",
+    "question": "Find floats that have measurements below -60 degrees latitude.",
+    "ground_truth_sql": "SELECT DISTINCT float_id FROM argo_profiles WHERE latitude < -60;",
+    "relevant_tables": ["argo_profiles"],
+    "explanation": "Distinct selection with spatial filter."
+  },
+  {
+    "id": "M9",
+    "difficulty": "Medium",
+    "category": "Join",
+    "question": "Average temperature of all floats managed by 'FR GDAC'.",
+    "ground_truth_sql": "SELECT AVG(p.temperature) FROM argo_profiles p JOIN float_metadata m ON p.float_id = m.float_id WHERE m.institution = 'FR GDAC';",
+    "relevant_tables": ["argo_profiles", "float_metadata"],
+    "explanation": "Requires a join between profile data and metadata."
+  },
+  {
+    "id": "M10",
+    "difficulty": "Medium",
+    "category": "Temporal",
+    "question": "How many measurements were taken in January 2024?",
+    "ground_truth_sql": "SELECT COUNT(*) FROM argo_profiles WHERE time >= '2024-01-01' AND time < '2024-02-01';",
+    "relevant_tables": ["argo_profiles"],
+    "explanation": "Date range filtering."
+  },
+  {
+    "id": "H1",
+    "difficulty": "Hard",
+    "category": "Scientific Analysis",
+    "question": "Identify the 100m depth bin with the highest average salinity.",
+    "ground_truth_sql": "SELECT floor(depth/100)*100 as depth_bin, AVG(salinity) FROM argo_profiles GROUP BY depth_bin ORDER BY AVG(salinity) DESC LIMIT 1;",
+    "relevant_tables": ["argo_profiles"],
+    "explanation": "Complex grouping with math on columns."
+  },
+  {
+    "id": "H2",
+    "difficulty": "Hard",
+    "category": "Anomalies",
+    "question": "Find measurements where the temperature is more than 5 degrees above the overall average.",
+    "ground_truth_sql": "SELECT * FROM argo_profiles WHERE temperature > (SELECT AVG(temperature) FROM argo_profiles) + 5;",
+    "relevant_tables": ["argo_profiles"],
+    "explanation": "Requires a subquery to calculate the global average."
+  },
+  {
+    "id": "H3",
+    "difficulty": "Hard",
+    "category": "Spatial Complexity",
+    "question": "Which float has traveled the furthest distance north (max latitude)?",
+    "ground_truth_sql": "SELECT float_id, MAX(latitude) as max_lat FROM argo_profiles GROUP BY float_id ORDER BY max_lat DESC LIMIT 1;",
+    "relevant_tables": ["argo_profiles"],
+    "explanation": "Aggregation with specific sorting."
+  },
+  {
+    "id": "H4",
+    "difficulty": "Hard",
+    "category": "Analytical",
+    "question": "Find the average temperature vs depth for the 'Southern Ocean' (lat < -40) vs 'Equatorial' (lat BETWEEN -10 AND 10).",
+    "ground_truth_sql": "SELECT CASE WHEN latitude < -40 THEN 'Southern' WHEN latitude BETWEEN -10 AND 10 THEN 'Equatorial' END as region, AVG(temperature) FROM argo_profiles WHERE latitude < -40 OR latitude BETWEEN -10 AND 10 GROUP BY region;",
+    "relevant_tables": ["argo_profiles"],
+    "explanation": "Complex CASE statement within aggregation."
+  },
+  {
+    "id": "H5",
+    "difficulty": "Hard",
+    "category": "Metadata/JSON",
+    "question": "Count how many floats record 'TEMP_ADJUSTED' as a parameter.",
+    "ground_truth_sql": "SELECT COUNT(*) FROM float_metadata WHERE parameters::jsonb @> '\"TEMP_ADJUSTED\"';",
+    "relevant_tables": ["float_metadata"],
+    "explanation": "Requires JSONB operators to query the parameters field."
+  },
+  {
+    "id": "H6",
+    "difficulty": "Hard",
+    "category": "Join/Aggregation",
+    "question": "Find the institution that has the deepest recorded measurement.",
+    "ground_truth_sql": "SELECT m.institution, MAX(p.depth) FROM argo_profiles p JOIN float_metadata m ON p.float_id = m.float_id GROUP BY m.institution ORDER BY MAX(p.depth) DESC LIMIT 1;",
+    "relevant_tables": ["argo_profiles", "float_metadata"],
+    "explanation": "Join with grouping and extreme value selection."
+  },
+  {
+    "id": "H7",
+    "difficulty": "Hard",
+    "category": "Temporal/Night",
+    "question": "What is the average surface temperature recorded at night (between 22:00 and 04:00)?",
+    "ground_truth_sql": "SELECT AVG(temperature) FROM argo_profiles WHERE depth < 10 AND (time::time >= '22:00:00' OR time::time <= '04:00:00');",
+    "relevant_tables": ["argo_profiles"],
+    "explanation": "Time-of-day filtering with depth constraint."
+  },
+  {
+    "id": "H8",
+    "difficulty": "Hard",
+    "category": "Correlation",
+    "question": "Calculate the average temperature for every 0.1 unit of salinity change.",
+    "ground_truth_sql": "SELECT round(salinity::numeric, 1) as sal_bin, AVG(temperature) FROM argo_profiles GROUP BY sal_bin ORDER BY sal_bin;",
+    "relevant_tables": ["argo_profiles"],
+    "explanation": "Complex binning on a float column."
+  },
+  {
+    "id": "H9",
+    "difficulty": "Hard",
+    "category": "Trajectory",
+    "question": "Identify floats that have crossed the equator (lat changed from negative to positive or vice versa).",
+    "ground_truth_sql": "SELECT float_id FROM argo_profiles GROUP BY float_id HAVING MIN(latitude) < 0 AND MAX(latitude) > 0;",
+    "relevant_tables": ["argo_profiles"],
+    "explanation": "Using HAVING clause to detect sign change in a group."
+  },
+  {
+    "id": "H10",
+    "difficulty": "Hard",
+    "category": "Efficiency",
+    "question": "List the top 5 floats with the highest data point density (total measurements / unique profiles).",
+    "ground_truth_sql": "SELECT float_id, COUNT(*)::float / COUNT(DISTINCT profile_number) as density FROM argo_profiles GROUP BY float_id ORDER BY density DESC LIMIT 5;",
+    "relevant_tables": ["argo_profiles"],
+    "explanation": "Calculated metric involving two different types of counts."
+  }
+]

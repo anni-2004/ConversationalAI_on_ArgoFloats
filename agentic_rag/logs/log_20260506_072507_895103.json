@@ -1,0 +1,13 @@
+{
+  "timestamp": "2026-05-06T07:25:01.062267",
+  "user_query": "Show all measurements for float ID '2902121'.",
+  "attempts": [
+    {
+      "attempt": 1,
+      "sql": "SELECT * FROM argo_profiles WHERE float_id = '2902121';",
+      "success": true,
+      "error": null
+    }
+  ],
+  "final_status": "Success (First Pass)"
+}

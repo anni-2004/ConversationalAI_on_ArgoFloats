@@ -1,0 +1,13 @@
+{
+  "timestamp": "2026-05-06T07:27:27.612200",
+  "user_query": "Find the average salinity for measurements between 500 and 1000 meters depth.",
+  "attempts": [
+    {
+      "attempt": 1,
+      "sql": "SELECT AVG(salinity) FROM argo_profiles WHERE depth BETWEEN 500 AND 1000;",
+      "success": true,
+      "error": null
+    }
+  ],
+  "final_status": "Success (First Pass)"
+}

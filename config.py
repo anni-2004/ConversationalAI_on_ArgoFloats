@@ -23,7 +23,7 @@ VECTOR_DB_CONFIG = {
 # Ollama LLM configuration
 OLLAMA_CONFIG = {
     "base_url": "http://localhost:11434",
-    "model": "llama3.2",
+    "model": "llama3.2:1b",
     "temperature": 0.1
 }
 

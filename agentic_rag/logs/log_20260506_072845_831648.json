@@ -1,0 +1,13 @@
+{
+  "timestamp": "2026-05-06T07:28:35.584532",
+  "user_query": "How many measurements were taken in January 2024?",
+  "attempts": [
+    {
+      "attempt": 1,
+      "sql": "SELECT COUNT(*) FROM argo_profiles WHERE time::date = '2024-01-01';",
+      "success": true,
+      "error": null
+    }
+  ],
+  "final_status": "Success (First Pass)"
+}
